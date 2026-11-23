@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>F1 Telemetria Live</title>
+  <link rel="icon" href="/static/icon.png">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/plotly.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="title">
+      <h1 id="event">F1 Telemetria Live</h1>
+      <span id="session" class="muted"></span>
+    </div>
+    <div class="picker">
+      <select id="year" aria-label="Stagione"><option value="">● Live</option></select>
+      <select id="gp" class="hidden" aria-label="Gran Premio"></select>
+      <select id="sess" class="hidden" aria-label="Sessione"></select>
+    </div>
+    <div class="pills">
+      <span id="mode" class="pill"></span>
+      <span id="lapcount" class="pill"></span>
+      <span id="track" class="pill hidden"></span>
+      <span id="updated" class="muted small"></span>
+      <button id="account" class="account hidden" type="button"></button>
+      <button id="shutdown" class="account secondary" type="button" title="Spegne la dashboard e la registrazione">Spegni</button>
+    </div>
+  </header>
+
+  <dialog id="login">
+    <form id="loginForm" method="dialog">
+      <h2>Accedi con l'account F1</h2>
+      <p class="muted small">Serve un abbonamento F1 TV per ricevere telemetria e posizioni.
+        Email e password vanno direttamente a Formula 1 e non vengono salvate:
+        sul tuo Mac resta solo il token di accesso.</p>
+      <label>Email <input name="email" type="email" autocomplete="username" required></label>
+      <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
+      <p id="loginError" class="error hidden"></p>
+      <div class="actions">
+        <button type="button" id="loginCancel" class="secondary">Annulla</button>
+        <button type="submit" id="loginSubmit">Accedi</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="logout">
+    <form method="dialog">
+      <h2>Account F1</h2>
+      <p id="logoutInfo" class="muted small"></p>
+      <div class="actions">
+        <button value="cancel" class="secondary">Chiudi</button>
+        <button value="logout" id="logoutConfirm">Esci</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="status" class="status hidden"></div>
+
+  <div class="layout">
+    <aside class="standings">
+      <h2>Classifica</h2>
+      <ol id="drivers"></ol>
+    </aside>
+
+    <main>
+      <section class="controls">
+        <div class="control">
+          <label for="lapA">Giro</label>
+          <span id="driverA" class="driver-tag">—</span>
+          <select id="lapA"></select>
+          <label class="check"><input type="checkbox" id="follow" checked> Segui l'ultimo giro</label>
+        </div>
+        <div class="control">
+          <label for="driverB">Confronta con</label>
+          <select id="driverB"><option value="">Nessuno</option></select>
+          <select id="lapB" disabled>
+            <option value="same">Stesso giro</option>
+            <option value="best">Giro più veloce</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="laps">
+        <div id="lapstrip" class="lapstrip"></div>
+      </section>
+
+      <section class="panels">
+        <div class="panel charts">
+          <div id="summary" class="summary"></div>
+          <div id="chart"></div>
+        </div>
+        <div class="panel map">
+          <h2>Tracciato <span class="muted small">colore = velocità</span></h2>
+          <div id="map"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
